@@ -29,7 +29,7 @@ mongoose
 app.use("/api/users", users);
 app.use("/api/insta", insta);
 
-//Serve static assets if in production
+//Serve static assets if in producti
 if (process.env.NODE_ENV === "production") {
   // Set static folder
   app.use(express.static("client/build"));
