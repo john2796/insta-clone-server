@@ -3,12 +3,6 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import { onToggleLikesHandler } from "../../store/action/instaAction";
-import {
-  getInstaComments,
-  addInstaComments
-} from "../../store/action/instaCommentAction";
-
 import {
   Card,
   CardImg,
@@ -47,6 +41,7 @@ class InstaCard extends Component {
 
   handleSubmit = (e, id) => {
     e.preventDefault();
+    if (!this.state.message) return;
     this.props.addInstaComments(this.state.message, this.props.instacomments);
     this.setState({ message: "" });
     // const { data } = this.props.instagram;
@@ -218,16 +213,8 @@ InstaCard.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  instagram: state.instagram,
-  instacomments: state.insta.comments,
+  insta: state.insta,
   user: state.auth.user
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    onToggleLikesHandler,
-    getInstaComments,
-    addInstaComments
-  }
-)(InstaCard);
+export default connect(mapStateToProps)(InstaCard);

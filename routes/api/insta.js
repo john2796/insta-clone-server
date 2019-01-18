@@ -10,85 +10,55 @@ const validateInstaProfileInput = require("../../validation/validateInstaProfile
 // @access  Public
 //http://localhost:5000/api/insta
 router.get("/", (req, res) => {
-  Insta.find((err, posts) => {
-    if (err) res.json({ success: false, error: err });
-    return res.json({ success: true, posts: posts });
-  });
+  const errors = {};
+  Insta.find()
+    .then(profiles => {
+      if (!profiles) {
+        errors.noprofile = "There is no profile for this user";
+        return res.status(404).json(errors);
+      }
+      res.json(profiles);
+    })
+    .catch(err => res.status(404).json({ profile: "There is no profiles" }));
 });
 
 // @route   POST api/insta
 // @desc    Post comments
 // @access  Public
 //http://localhost:5000/api/insta
-// router.post("/", (req, res) => {
-//   const profileFields = {};
+router.post("/", (req, res) => {
+  const profileFields = {};
 
-//   profileFields.user = req.user.id;
-//   if (req.body.isLiked) profileFields.isLiked = req.body.isLiked;
-//   if (req.body.username) profileFields.username = req.body.username;
-//   if (req.body.thumbnailUrl) profileFields.thumbnailUrl = req.body.thumbnailUrl;
-//   if (req.body.imageUrl) profileFields.imageUrl = req.body.imageUrl;
-//   if (req.body.likes) profileFields.likes = req.body.likes;
+  if (req.body.isLiked) profileFields.isLiked = req.body.isLiked;
+  if (req.body.username) profileFields.username = req.body.username;
+  if (req.body.thumbnailUrl) profileFields.thumbnailUrl = req.body.thumbnailUrl;
+  if (req.body.imageUrl) profileFields.imageUrl = req.body.imageUrl;
+  if (req.body.likes) profileFields.likes = req.body.likes;
 
-//   Insta.findOne({ user: req.user.id }, profile => {
-//     if (profile) {
-//       errors.username = "The username already exists";
-//       res.status(400).json(errors);
-//     }
-//     new Insta(profileFields).save().then(profile => res.json(profile));
-//   });
-// });
+  Insta.findOne({ username: req.body.username }, profiles => {
+    if (profiles) {
+      errors.username = "The username already exists";
+      res.status(400).json(errors);
+    }
+    new Insta(profileFields).save().then(profiles => res.json(profiles));
+  });
+});
 
 // @route   POST api/insta/comments
 // @desc    Add comments
 // @access  Public
-router.post("/api/instagram/:id/comments", (req, res) => {
-  const username = req.body.username;
-  const comment = req.body.comment;
-  if (!username || !comment) {
-    res.status(422);
-    res.json({ error: "Incomplete Params in Body" });
-  }
 
-  Insta.find({ _id: req.params.id }, (err, post) => {
-    if (err) return res.status(401).json({ err: "Post Not Found" });
-    const newPost = post[0].comments;
-    newPost.push({ username, comment });
-    post[0].comments = newPost;
-    post[0].save().then(() => {
-      Insta.find({}, (err, post) => {
-        if (err) return err;
-        res.json(post.reverse());
-      });
-    });
-  });
-});
-
-// @route   POST api/insta
-// @desc    Update comments
-// @access  Public
-//http://localhost:5000/api/insta/:insta:id
-router.post("/comments/:commentId", (req, res) => {
-  const commentId = req.params.commentId;
-  // if (!commentId) {
-  //   return res
-  //     .status(422)
-  //     .json({ success: false, error: "No comment id provided" });
-  // }
-
-  Insta.findOne({ _id: commentId }, (error, comment) => {
-    if (error) return res.json({ success: false, error });
-    const text = req.body.text;
-    if (text) comment.text = text;
-    comment.save(error => {
-      if (error) return res.json({ success: false, error });
-      Insta.find({}, (err, comment) => {
-        if (err) {
-          return res.status(401).json({ err: "failed to fetch comment" });
-        }
-        res.json(comment);
-      });
-    });
+router.post("/comments/:username", (req, res) => {
+  Insta.findOne({ username: req.params.username }).then(profile => {
+    const newComments = {
+      text: req.body.text,
+      username: req.body.username
+    };
+    profile.comments.unshift(newComments);
+    profile
+      .save()
+      .then(profile => res.json(profile))
+      .catch(err => console.log(err));
   });
 });
 

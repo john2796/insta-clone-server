@@ -6,6 +6,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import InstaNavbar from "./InstaNavbar";
 import InstaCard from "./InstaCard";
+import { getInstaComments } from "../../store/action/instaCommentAction";
 
 const InstagramStyle = styled.div`
   .left_side,
@@ -80,7 +81,10 @@ Instagram.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  instagram: state.instagram.data
+  insta: state.insta.data
 });
 
-export default connect(mapStateToProps)(Instagram);
+export default connect(
+  mapStateToProps,
+  { getInstaComments }
+)(Instagram);

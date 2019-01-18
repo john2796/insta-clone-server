@@ -2,27 +2,39 @@ import {
   ADD_COMMENT,
   UPDATE_COMMENT,
   DELETE_COMMENT,
-  GET_COMMENT,
-  COMMENT_ERRORS
+  COMMENT_ERRORS,
+  TOGGLE_LIKES
 } from "../action/types";
 
 const initialState = {
   comments: [],
-  errors: {}
+  errors: {},
+  data: [],
+  loading: false
 };
 export default function instaCommentReducer(state = initialState, action) {
   switch (action.type) {
     case GET_COMMENT:
       return {
         ...state,
-        comments: action.comments,
-        errors: action.err
+        data: action.data
       };
-    case ADD_COMMENT:
+    case USER_LOADING:
       return {
         ...state,
-        comments: action.newComments
+        loading: true
       };
+
+    // case ADD_COMMENT:
+    //   return {
+    //     ...state,
+    //     comments: action.newComments
+    //   };
+    // case TOGGLE_LIKES:
+    //   return {
+    //     ...state,
+    //     data: action.newData
+    //   };
     default:
       return state;
   }
