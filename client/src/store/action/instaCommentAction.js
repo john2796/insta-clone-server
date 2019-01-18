@@ -27,13 +27,32 @@ export const getInstaComments = () => dispatch => {
     );
 };
 
-export const addInstaComments = (username, newComments) => dispatch => {
+export const addInstaComments = (
+  username,
+  newComments,
+  postComments
+) => dispatch => {
   dispatch({
     type: ADD_COMMENT,
     newComments
   });
   axios
-    .post(`${URL}/comments/${username}`, { newComments })
+    .post(`http://localhost:5000/api/insta/comments/${username}`, postComments)
+    .then(res => console.log(res.data))
+    .catch(err => console.log(err));
+};
+
+export const deleteInstaComment = (
+  comment_id,
+  username,
+  deleteComments
+) => dispatch => {
+  dispatch({
+    type: DELETE_COMMENT,
+    deleteComments
+  });
+  axios
+    .delete(`${URL}/comments/${comment_id}/${username}`)
     .then(res => console.log(res.data))
     .catch(err => console.log(err));
 };

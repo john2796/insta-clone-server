@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { connect } from "react-redux";
+import uuidv4 from "uuid/v4";
 
 import {
   Card,
@@ -10,9 +11,13 @@ import {
   CardBody,
   CardTitle,
   CardSubtitle,
+  Button,
   Input
 } from "reactstrap";
-import { addInstaComments } from "../../store/action/instaCommentAction";
+import {
+  addInstaComments,
+  deleteInstaComment
+} from "../../store/action/instaCommentAction";
 
 const InstaCardStyle = styled.div`
   .comment_icons {
@@ -39,15 +44,33 @@ class InstaCard extends Component {
   addComment = (e, username) => {
     e.preventDefault();
     if (!this.state.message) return;
-    const newComments = [...this.props.comments];
-    if (this.props.username === username) {
-      newComments.push({
-        text: this.state.message,
-        username: this.props.user
-      });
-    }
-    this.props.addInstaComments(this.state.message, this.props.instacomments);
+    const newComments = this.props.instagram;
+    const postComments = {
+      text: this.state.message,
+      username: this.props.name,
+      commentId: uuidv4()
+    };
+    newComments.map(comment => {
+      if (comment.username === username) {
+        comment.comments.push(postComments);
+      }
+    });
+
+    this.props.addInstaComments(username, newComments, postComments);
     this.setState({ message: "" });
+  };
+
+  deleteComment = (e, commentId, username) => {
+    const deleteComments = this.props.instagram;
+    deleteComments.map(deletedComment => {
+      if (deletedComment.username === username) {
+        deletedComment.comments.filter(
+          comment => comment.commentId !== commentId
+        );
+      }
+    });
+
+    this.props.deleteInstaComment(commentId, username, deleteComments);
   };
 
   handleChange = e => {
@@ -134,13 +157,29 @@ class InstaCard extends Component {
               <CardText
                 key={index}
                 style={{
+                  display: "flex",
+                  justifyContent: "space-between",
                   margin: "6px 0"
                 }}
               >
-                <span style={{ fontWeight: "bold", marginRight: 5 }}>
-                  {comment.text}
+                <span>
+                  <span style={{ fontWeight: "bold", marginRight: 5 }}>
+                    {comment.username}
+                  </span>
+                  <span>{comment.text}</span>
                 </span>
-                <span>{comment.username}</span>
+                <span>
+                  <Button
+                    outline
+                    color="secondary"
+                    style={{ fontSize: 12, borderRadius: "90%" }}
+                    onClick={e =>
+                      this.deleteComment(e, comment.commentId, username)
+                    }
+                  >
+                    X
+                  </Button>
+                </span>
               </CardText>
             ))}
 
@@ -189,11 +228,14 @@ InstaCard.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  instagram: state.insta,
-  user: state.auth.user
+  instagram: state.insta.data,
+  name: state.auth.user.name
 });
 
 export default connect(
   mapStateToProps,
-  { addInstaComments }
+  {
+    addInstaComments,
+    deleteInstaComment
+  }
 )(InstaCard);

@@ -1,3 +1,5 @@
+import dummyData from "../../dummyData";
+
 import {
   ADD_COMMENT,
   UPDATE_COMMENT,
@@ -13,14 +15,20 @@ const initialState = {
   data: [],
   loading: false
 };
+
 export default function instaCommentReducer(state = initialState, action) {
   switch (action.type) {
     case GET_COMMENT:
       console.log(action.data);
-
+      let conditionalData;
+      if (!state.data) {
+        conditionalData = dummyData;
+      } else {
+        conditionalData = action.data;
+      }
       return {
         ...state,
-        data: action.data,
+        data: conditionalData,
         loading: false
       };
     case POST_LOADING:
@@ -32,6 +40,11 @@ export default function instaCommentReducer(state = initialState, action) {
       return {
         ...state,
         data: action.newComments
+      };
+    case DELETE_COMMENT:
+      return {
+        ...state,
+        data: action.deleteComments
       };
     // case TOGGLE_LIKES:
     //   return {

@@ -29,9 +29,14 @@ const InstaDataSchema = new Schema({
     default: [
       {
         username: "",
-        text: ""
+        text: "",
+        commentId: ""
       }
     ]
+  },
+  date: {
+    type: Date,
+    default: Date.now
   }
 });
 

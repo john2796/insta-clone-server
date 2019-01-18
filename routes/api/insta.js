@@ -52,9 +52,10 @@ router.post("/comments/:username", (req, res) => {
   Insta.findOne({ username: req.params.username }).then(profile => {
     const newComments = {
       text: req.body.text,
-      username: req.body.username
+      username: req.body.username,
+      commentId: req.body.commentId
     };
-    profile.comments.unshift(newComments);
+    profile.comments.push(newComments);
     profile
       .save()
       .then(profile => res.json(profile))
@@ -66,18 +67,22 @@ router.post("/comments/:username", (req, res) => {
 // @desc    Delete comments
 // @access  Public
 //http://localhost:5000/api/comments/:commentId
-router.delete("/comments/:commentId", (req, res) => {
-  const { commentId } = req.params;
-  if (!commentId) {
-    return res
-      .status(400)
-      .json({ success: false, error: "No comment id provided" });
-  }
-  Insta.remove({ _id: commentId }, (error, comment) => {
-    if (error) {
-      return res.status(400).json({ success: false, error });
-    }
-    return res.json({ success: true });
+router.delete("/comments/:comment_id/:username", (req, res) => {
+  const commentId = req.params.commentId;
+  Insta.findOne({ username: req.params.username }, (err, profile) => {
+    if (err) res.status(401).json({ success: false });
+    const postComments = profile.comments.filter(
+      comment => comment.commentId === commentId
+    );
+    profile.comments = postComments;
+
+    profile.save().then(() => {
+      Insta.find({}, (err, posts) => {
+        if (err) return res.status(401).json({ success: false });
+
+        res.json(posts);
+      });
+    });
   });
 });
 
