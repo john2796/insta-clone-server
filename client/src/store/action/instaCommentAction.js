@@ -9,7 +9,8 @@ import {
   POST_LOADING
 } from "./types";
 
-const URL = "http://localhost:5000/api/insta/";
+// http://localhost:5000
+const URL = "/api/insta/";
 export const getInstaComments = () => dispatch => {
   axios
     .get(URL)
@@ -37,7 +38,7 @@ export const addInstaComments = (
     newComments
   });
   axios
-    .post(`http://localhost:5000/api/insta/comments/${username}`, postComments)
+    .post(`${URL}/comments/${username}`, postComments)
     .then(res => console.log(res.data))
     .catch(err => console.log(err));
 };
