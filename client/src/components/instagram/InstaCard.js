@@ -12,6 +12,7 @@ import {
   CardSubtitle,
   Input
 } from "reactstrap";
+import { addInstaComments } from "../../store/action/instaCommentAction";
 
 const InstaCardStyle = styled.div`
   .comment_icons {
@@ -35,27 +36,18 @@ class InstaCard extends Component {
     message: ""
   };
 
-  componentDidMount() {
-    this.props.getInstaComments();
-  }
-
-  handleSubmit = (e, id) => {
+  addComment = (e, username) => {
     e.preventDefault();
     if (!this.state.message) return;
+    const newComments = [...this.props.comments];
+    if (this.props.username === username) {
+      newComments.push({
+        text: this.state.message,
+        username: this.props.user
+      });
+    }
     this.props.addInstaComments(this.state.message, this.props.instacomments);
     this.setState({ message: "" });
-    // const { data } = this.props.instagram;
-    // if (!this.state.message) return;
-    // const newItem = data.map(post => {
-    //   if (post.id === id) {
-    //     post.comments.push({
-    //       text: this.state.message,
-    //       username: post.username
-    //     });
-    //   }
-    //   return post;
-    // });
-    // this.props.onAddHandler(newItem);
   };
 
   handleChange = e => {
@@ -63,10 +55,10 @@ class InstaCard extends Component {
       [e.target.name]: e.target.value
     });
   };
-  likeHanlder = id => {
-    const { data } = this.props.instagram;
-    this.props.onToggleLikesHandler(id, data);
-  };
+  // likeHanlder = id => {
+  //   const { data } = this.props.instagram;
+  //   this.props.onToggleLikesHandler(id, data);
+  // };
 
   render() {
     const {
@@ -79,8 +71,7 @@ class InstaCard extends Component {
         comments,
         id,
         isLiked
-      },
-      instacomments
+      }
     } = this.props;
 
     return (
@@ -139,32 +130,17 @@ class InstaCard extends Component {
               {isLiked ? likes + 1 : likes} likes
             </CardSubtitle>
 
-            <div>
-              {comments.map((dummyComment, index) => (
-                <div key={index}>
-                  <span
-                    style={{
-                      fontWeight: "bold",
-                      marginRight: 5
-                    }}
-                  >
-                    {dummyComment.username}
-                  </span>
-                  <span>{dummyComment.text}</span>
-                </div>
-              ))}
-            </div>
-            {instacomments.map(comment => (
+            {comments.map((comment, index) => (
               <CardText
-                key={comment._id}
+                key={index}
                 style={{
                   margin: "6px 0"
                 }}
               >
                 <span style={{ fontWeight: "bold", marginRight: 5 }}>
-                  {this.props.user.name}
+                  {comment.text}
                 </span>
-                <span>{comment.text}</span>
+                <span>{comment.username}</span>
               </CardText>
             ))}
 
@@ -177,7 +153,7 @@ class InstaCard extends Component {
               {timestamp}
             </span>
           </CardBody>
-          <form onSubmit={e => this.handleSubmit(e, id)}>
+          <form onSubmit={e => this.addComment(e, username)}>
             <Input
               type="text"
               name="message"
@@ -213,8 +189,11 @@ InstaCard.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  insta: state.insta,
+  instagram: state.insta,
   user: state.auth.user
 });
 
-export default connect(mapStateToProps)(InstaCard);
+export default connect(
+  mapStateToProps,
+  { addInstaComments }
+)(InstaCard);

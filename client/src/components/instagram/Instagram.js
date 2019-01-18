@@ -6,12 +6,19 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import InstaNavbar from "./InstaNavbar";
 import InstaCard from "./InstaCard";
-import { getInstaComments } from "../../store/action/instaCommentAction";
+import {
+  getInstaComments,
+  setPostsLoading
+} from "../../store/action/instaCommentAction";
 
 const InstagramStyle = styled.div`
   .left_side,
   .right_side {
     border: 1px solid gray;
+  }
+  .loading {
+    margin: 0 auto;
+    text-align: center;
   }
 `;
 
@@ -19,6 +26,11 @@ class Instagram extends Component {
   state = {
     searchTerm: ""
   };
+
+  componentDidMount() {
+    this.props.setPostsLoading();
+    this.props.getInstaComments();
+  }
 
   handleChange = e => {
     this.setState({
@@ -53,7 +65,18 @@ class Instagram extends Component {
         />
         <Container className="wrapper">
           <Row style={{ marginTop: "50px" }}>
-            <Col sm="8">{cardComponent}</Col>
+            <Col sm="8">
+              {this.props.loading ? (
+                <div className="loading">
+                  <img
+                    src="https://thumbs.gfycat.com/InnocentFlusteredAquaticleech-small.gif"
+                    alt="loading..."
+                  />
+                </div>
+              ) : (
+                cardComponent
+              )}
+            </Col>
             <Col sm="4">
               <div className="right_side">Right side!</div>
             </Col>
@@ -81,10 +104,11 @@ Instagram.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  insta: state.insta.data
+  instagram: state.insta.data,
+  loading: state.insta.loading
 });
 
 export default connect(
   mapStateToProps,
-  { getInstaComments }
+  { getInstaComments, setPostsLoading }
 )(Instagram);
