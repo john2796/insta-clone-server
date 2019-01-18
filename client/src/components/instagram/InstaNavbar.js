@@ -40,6 +40,9 @@ const NavbarStyle = styled.div`
     border: 1px solid red;
     margin: 0 auto;
   }
+  .serach {
+    padding: 0 100px;
+  }
 `;
 
 class InstaNavbar extends Component {
@@ -71,6 +74,7 @@ class InstaNavbar extends Component {
               name="searchTerm"
               value={searchTerm}
               onChange={handleChange}
+              className="serach"
             />
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
