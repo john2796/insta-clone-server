@@ -15,7 +15,9 @@ class Dashboard extends Component {
     // const name = user.name.split(" ")[0];
     return (
       <React.Fragment>
-        <Instagram onLogoutClick={this.onLogoutClick} />
+        <div>
+          <Instagram onLogoutClick={this.onLogoutClick} />
+        </div>
       </React.Fragment>
     );
   }

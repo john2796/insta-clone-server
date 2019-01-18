@@ -63,7 +63,10 @@ class Instagram extends Component {
           searchTerm={searchTerm}
           handleChange={this.handleChange}
         />
-        <Container className="wrapper">
+        <Container
+          className="wrapper"
+          style={{ maxWidth: "920px", margin: "0 auto", background: "#F8F9FA" }}
+        >
           <Row style={{ marginTop: "50px" }}>
             <Col sm="8">
               {this.props.loading ? (
@@ -87,21 +90,21 @@ class Instagram extends Component {
   }
 }
 
-Instagram.propTypes = {
-  instagram: PropTypes.arrayOf(
-    PropTypes.shape({
-      comments: PropTypes.arrayOf(
-        PropTypes.shape({
-          text: PropTypes.string,
-          username: PropTypes.string
-        })
-      ),
-      thumbnailUrl: PropTypes.string,
-      timestamp: PropTypes.string,
-      username: PropTypes.string
-    })
-  )
-};
+// Instagram.propTypes = {
+//   instagram: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       comments: PropTypes.arrayOf(
+//         PropTypes.shape({
+//           text: PropTypes.string,
+//           username: PropTypes.string
+//         })
+//       ),
+//       thumbnailUrl: PropTypes.string,
+//       timestamp: PropTypes.string,
+//       username: PropTypes.string
+//     })
+//   )
+// };
 
 const mapStateToProps = state => ({
   instagram: state.insta.data,

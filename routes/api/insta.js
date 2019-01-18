@@ -67,19 +67,18 @@ router.post("/comments/:username", (req, res) => {
 // @desc    Delete comments
 // @access  Public
 //http://localhost:5000/api/comments/:commentId
-router.delete("/comments/:comment_id/:username", (req, res) => {
+router.delete("/comments/:commentId/:username", (req, res) => {
   const commentId = req.params.commentId;
   Insta.findOne({ username: req.params.username }, (err, profile) => {
     if (err) res.status(401).json({ success: false });
     const postComments = profile.comments.filter(
-      comment => comment.commentId === commentId
+      comment => comment.commentId !== commentId
     );
     profile.comments = postComments;
 
     profile.save().then(() => {
       Insta.find({}, (err, posts) => {
         if (err) return res.status(401).json({ success: false });
-
         res.json(posts);
       });
     });

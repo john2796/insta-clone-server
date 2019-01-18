@@ -44,7 +44,7 @@ export default function instaCommentReducer(state = initialState, action) {
     case DELETE_COMMENT:
       return {
         ...state,
-        data: action.deleteComments
+        data: action.data
       };
     // case TOGGLE_LIKES:
     //   return {

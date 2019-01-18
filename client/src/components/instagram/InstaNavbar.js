@@ -18,6 +18,11 @@ import {
 import styled from "styled-components";
 
 const NavbarStyle = styled.div`
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   .far {
     font-size: 20px;
     color: gray;
@@ -30,6 +35,10 @@ const NavbarStyle = styled.div`
     border-right: 1px solid black;
     line-height: 25px;
     cursor: pinter;
+  }
+  .navbar {
+    border: 1px solid red;
+    margin: 0 auto;
   }
 `;
 
@@ -51,7 +60,7 @@ class InstaNavbar extends Component {
     const { onLogoutClick, searchTerm, handleChange } = this.props;
     return (
       <NavbarStyle>
-        <Navbar color="light" light expand="md">
+        <Navbar light expand="md" className="navbar">
           <NavbarBrand href="/">
             <i className="fab fa-instagram" />
             <span style={{ paddingLeft: "15px" }}>Instagram</span>

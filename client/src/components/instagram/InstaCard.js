@@ -34,6 +34,9 @@ const InstaCardStyle = styled.div`
   .input_comment[type="placeholder"] {
     padding: 100px auto;
   }
+
+  .delete_btn {
+  }
 `;
 
 class InstaCard extends Component {
@@ -60,17 +63,8 @@ class InstaCard extends Component {
     this.setState({ message: "" });
   };
 
-  deleteComment = (e, commentId, username) => {
-    const deleteComments = this.props.instagram;
-    deleteComments.map(deletedComment => {
-      if (deletedComment.username === username) {
-        deletedComment.comments.filter(
-          comment => comment.commentId !== commentId
-        );
-      }
-    });
-
-    this.props.deleteInstaComment(commentId, username, deleteComments);
+  deleteComment = (commentId, username) => {
+    this.props.deleteInstaComment(commentId, username);
   };
 
   handleChange = e => {
@@ -117,17 +111,17 @@ class InstaCard extends Component {
                 marginRight: 8
               }}
               src={thumbnailUrl}
-              alt={comments[0].text}
+              alt="comment text"
             />
             {username}
           </CardTitle>
           <CardImg
             top
-            width="100%"
             src={imageUrl}
             alt="Card image cap"
             style={{
-              objectFit: "cover"
+              objectFit: "cover",
+              maxWidth: "100%"
             }}
           />
 
@@ -169,16 +163,21 @@ class InstaCard extends Component {
                   <span>{comment.text}</span>
                 </span>
                 <span>
-                  <Button
-                    outline
-                    color="secondary"
-                    style={{ fontSize: 12, borderRadius: "90%" }}
-                    onClick={e =>
-                      this.deleteComment(e, comment.commentId, username)
-                    }
-                  >
-                    X
-                  </Button>
+                  {!comment.commentId ? (
+                    ""
+                  ) : (
+                    <Button
+                      outline
+                      color="secondary"
+                      className="delete_btn"
+                      style={{ fontSize: 12, borderRadius: "90%" }}
+                      onClick={() =>
+                        this.deleteComment(comment.commentId, username)
+                      }
+                    >
+                      X
+                    </Button>
+                  )}
                 </span>
               </CardText>
             ))}
@@ -213,19 +212,19 @@ class InstaCard extends Component {
   }
 }
 
-InstaCard.propTypes = {
-  instagram: PropTypes.shape({
-    comments: PropTypes.arrayOf(
-      PropTypes.shape({
-        text: PropTypes.string,
-        username: PropTypes.string
-      })
-    ),
-    thumbnailUrl: PropTypes.string,
-    timestamp: PropTypes.string,
-    username: PropTypes.string
-  })
-};
+// InstaCard.propTypes = {
+//   instagram: PropTypes.shape({
+//     comments: PropTypes.arrayOf(
+//       PropTypes.shape({
+//         text: PropTypes.string,
+//         username: PropTypes.string
+//       })
+//     ),
+//     thumbnailUrl: PropTypes.string,
+//     timestamp: PropTypes.string,
+//     username: PropTypes.string
+//   })
+// };
 
 const mapStateToProps = state => ({
   instagram: state.insta.data,

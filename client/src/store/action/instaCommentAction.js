@@ -42,18 +42,15 @@ export const addInstaComments = (
     .catch(err => console.log(err));
 };
 
-export const deleteInstaComment = (
-  comment_id,
-  username,
-  deleteComments
-) => dispatch => {
-  dispatch({
-    type: DELETE_COMMENT,
-    deleteComments
-  });
+export const deleteInstaComment = (commentId, username) => dispatch => {
   axios
-    .delete(`${URL}/comments/${comment_id}/${username}`)
-    .then(res => console.log(res.data))
+    .delete(`${URL}/comments/${commentId}/${username}`)
+    .then(({ data }) =>
+      dispatch({
+        type: DELETE_COMMENT,
+        data
+      })
+    )
     .catch(err => console.log(err));
 };
 
