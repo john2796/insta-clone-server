@@ -50,11 +50,13 @@ router.post("/", (req, res) => {
 
 router.post("/comments/:username", (req, res) => {
   Insta.findOne({ username: req.params.username }).then(profile => {
-    const newComments = {
-      text: req.body.text,
-      username: req.body.username,
-      commentId: req.body.commentId
-    };
+    const newComments = {};
+    if (req.body.text) newComments.text = req.body.text;
+    if (req.body.username) newComments.username = req.body.username;
+    if (req.body.commentId) newComments.commentId = req.body.commentId;
+    if (req.body.updatedAt) newComments.updatedAt = req.body.updatedAt;
+    if (req.body.createdAt) newComments.createdAt = req.body.createdAt;
+
     profile.comments.push(newComments);
     profile
       .save()

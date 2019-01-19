@@ -31,10 +31,8 @@ const InstaDataSchema = new Schema({
         username: { type: String },
         text: { type: String },
         commentId: { type: String },
-        timestamp: {
-          type: Date,
-          default: Date.now
-        }
+        updatedAt: { type: Date },
+        createdAt: { type: Date }
       }
     ]
   },

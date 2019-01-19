@@ -78,14 +78,15 @@ const InstaCardStyle = styled.div`
     font-size: 14px;
     color: #8f8f8f;
     border: none;
-    border-top: 1px solid #f4f4f4;
+    border-top: 1px solid #e8e8e8;
     padding: 30px;
-    min-width: 550px;
-    max-width: 550px;
+    min-width: 90%;
+    max-width: 350px;
+    /* max-width: 550px; */
     padding-left: 0;
     margin: 0 auto;
     &:focus {
-      border-color: #f4f4f4;
+      border-color: #e8e8e8;
       -webkit-box-shadow: none;
       box-shadow: none;
     }
@@ -108,8 +109,12 @@ class InstaCard extends Component {
     const postComments = {
       text: this.state.message,
       username: this.props.name,
-      commentId: uuid()
+      commentId: uuid(),
+      updatedAt: new Date(),
+      createdAt: new Date()
     };
+    // timestamp={comment.updatedAt}
+    //moment(updatedAt).fromNow()
     newComments.map(comment => {
       if (comment.username === username) {
         comment.comments.push(postComments);
@@ -244,8 +249,9 @@ class InstaCard extends Component {
                   </span>
                   <span>{comment.text}</span>
                   <span className="comment_timestamp">
-                    Posted
-                    {moment(comment.timestamp).fromNow()}
+                    {!comment.updatedAt
+                      ? null
+                      : moment(comment.updatedAt).fromNow()}
                   </span>
                 </span>
                 <span>
