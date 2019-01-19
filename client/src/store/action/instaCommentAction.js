@@ -10,7 +10,7 @@ import {
 } from "./types";
 
 // http://localhost:5000
-const URL = "/api/insta/";
+const URL = " http://localhost:5000/api/insta/";
 export const getInstaComments = () => dispatch => {
   axios
     .get(URL)
