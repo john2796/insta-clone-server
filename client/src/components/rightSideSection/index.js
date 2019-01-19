@@ -18,6 +18,8 @@ const RightSideStyle = styled.div`
   min-width: 350px;
   max-width: 350px;
   margin-left: -5px;
+  position: fixed;
+  top: 200px;
 
   .card_title {
     display: flex;
@@ -78,6 +80,7 @@ const RightSideStyle = styled.div`
 `;
 
 const HeaderStyle = styled.div`
+  position: fixed;
   padding-top: 80px;
   min-width: 350px;
   max-width: 350px;
