@@ -19,13 +19,17 @@ import styled from "styled-components";
 import sprite from "../../assets/smallerSprite.png";
 
 const NavbarStyle = styled.div`
-  background: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #e9e9e9;
   min-height: 80px;
-
+  background: white;
+  border-bottom: 1px solid #e9e9e9;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: block;
+  z-index: 1000;
   .far {
     font-size: 20px;
     color: gray;
@@ -41,6 +45,8 @@ const NavbarStyle = styled.div`
   .navbar {
     margin: 0 auto;
     width: 950px;
+    background: white;
+    min-height: 80px;
   }
   .title_sprite {
     background-repeat: no-repeat;
@@ -86,6 +92,11 @@ const NavbarStyle = styled.div`
     width: 1px;
     margin-right: -10px;
   }
+  input {
+    font-size: 12px;
+    text-align: center;
+    width: 202px;
+  }
 `;
 
 class InstaNavbar extends Component {
@@ -106,7 +117,7 @@ class InstaNavbar extends Component {
     const { onLogoutClick, searchTerm, handleChange } = this.props;
     return (
       <NavbarStyle>
-        <Navbar light expand="md" className="navbar">
+        <Navbar light expand="md" className="navbar ">
           <NavbarBrand href="/" className="logo">
             <div
               className="logo_sprite fab"

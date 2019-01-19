@@ -10,6 +10,7 @@ import {
   getInstaComments,
   setPostsLoading
 } from "../../store/action/instaCommentAction";
+import RightSide from "../rightSideSection/index";
 
 const InstagramStyle = styled.div`
   .left_side,
@@ -81,7 +82,7 @@ class Instagram extends Component {
               )}
             </Col>
             <Col sm="4">
-              <div className="right_side">Right side!</div>
+              <RightSide />
             </Col>
           </Row>
         </Container>

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import uuid from "uuid";
 import moment from "moment";
-
+import sprite from "../../assets/smallerSprite.png";
 import {
   Card,
   CardImg,
@@ -22,15 +22,50 @@ import {
 } from "../../store/action/instaCommentAction";
 
 const InstaCardStyle = styled.div`
+  margin-top: 80px;
   .comment_icons {
+    cursor: pointer;
+    display: flex;
     margin-bottom: 10px;
-    .comment_icons_heart .far {
-      margin-right: 10px;
+    justify-content: space-between;
+    .first_icon_item {
+      display: flex;
+      justify-content: space-between;
     }
-    .comment_icons_heart .far,
-    .comment_icons_comm .far {
-      font-size: 25px;
-      color: gray;
+    /* Icons Active */
+    .comment_icons_heart_red {
+      background-repeat: no-repeat;
+      background-position: -78px -142px;
+      height: 24px;
+      width: 24px;
+      margin-right: 13px;
+    }
+    .comment_icons_heart {
+      background-position: -104px -142px;
+      background-repeat: no-repeat;
+      height: 24px;
+      width: 24px;
+      margin-right: 13px;
+    }
+    .comment_icon_message {
+      background-repeat: no-repeat;
+      height: 24px;
+      width: 24px;
+      background-position: -182px -194px;
+      margin-right: 13px;
+    }
+    .comment_icons_share {
+      background-repeat: no-repeat;
+      height: 24px;
+      width: 24px;
+      background-position: -130px -194px;
+      margin-right: 13px;
+    }
+    .comment_icons_bookmark {
+      ackground-repeat: no-repeat;
+      background-position: 0 -194px;
+      height: 24px;
+      width: 24px;
     }
   }
   .input_comment[type="placeholder"] {
@@ -38,6 +73,27 @@ const InstaCardStyle = styled.div`
   }
 
   .delete_btn {
+  }
+  .input_comment {
+    font-size: 14px;
+    color: #8f8f8f;
+    border: none;
+    border-top: 1px solid #f4f4f4;
+    padding: 30px;
+    min-width: 550px;
+    max-width: 550px;
+    padding-left: 0;
+    margin: 0 auto;
+    &:focus {
+      border-color: #f4f4f4;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+  .comment_timestamp {
+    font-size: 12px;
+    color: #c4c4c4;
+    margin-left: 15px;
   }
 `;
 class InstaCard extends Component {
@@ -133,17 +189,36 @@ class InstaCard extends Component {
           />
 
           <CardBody>
+            {/* Icons */}
             <div className="comment_icons">
-              <span className="comment_icons_heart">
-                <i
-                  className="far fa-heart"
-                  style={isLiked ? { color: "red" } : null}
-                  onClick={() => this.likeHanlder(_id)}
+              <div className="flex_icon_item first_icon_item">
+                <div
+                  className="comment_icons_heart"
+                  style={{
+                    backgroundImage: `url(${sprite})`
+                  }}
                 />
-              </span>
-              <span className="comment_icons_comm">
-                <i className="far fa-comment" />
-              </span>
+                <div
+                  className="comment_icon_message"
+                  style={{
+                    backgroundImage: `url(${sprite})`
+                  }}
+                />
+                <div
+                  className="comment_icons_share"
+                  style={{
+                    backgroundImage: `url(${sprite})`
+                  }}
+                />
+              </div>
+              <div className="flex_icon_item">
+                <div
+                  className="comment_icons_bookmark"
+                  style={{
+                    backgroundImage: `url(${sprite})`
+                  }}
+                />
+              </div>
             </div>
             <CardSubtitle
               style={{
@@ -168,6 +243,10 @@ class InstaCard extends Component {
                     {comment.username}
                   </span>
                   <span>{comment.text}</span>
+                  <span className="comment_timestamp">
+                    Posted
+                    {moment(comment.timestamp).fromNow()}
+                  </span>
                 </span>
                 <span>
                   {!comment.commentId ? (
@@ -177,7 +256,7 @@ class InstaCard extends Component {
                       outline
                       color="secondary"
                       className="delete_btn"
-                      style={{ fontSize: 12, borderRadius: "90%" }}
+                      style={{ fontSize: 12, bordzerRadius: "90%" }}
                       onClick={() =>
                         this.deleteComment(comment.commentId, username)
                       }
@@ -206,11 +285,6 @@ class InstaCard extends Component {
               value={this.state.message}
               className="input_comment"
               placeholder="Add a comment..."
-              style={{
-                minWidth: "60%",
-                borderTopColor: "#DFDFDF",
-                fontSize: 14
-              }}
             />
           </form>
         </Card>
