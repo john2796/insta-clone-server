@@ -11,8 +11,6 @@ class Dashboard extends Component {
   };
 
   render() {
-    // const { user } = this.props.auth;
-    // const name = user.name.split(" ")[0];
     return (
       <React.Fragment>
         <div>

@@ -28,9 +28,9 @@ const InstaDataSchema = new Schema({
     type: Array,
     default: [
       {
-        username: "",
-        text: "",
-        commentId: ""
+        username: { type: String },
+        text: { type: String },
+        commentId: { type: String }
       }
     ]
   },

@@ -16,12 +16,15 @@ import {
 } from "reactstrap";
 // import PropTypes from "prop-types";
 import styled from "styled-components";
+import sprite from "../../assets/smallerSprite.png";
 
 const NavbarStyle = styled.div`
   background: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid #e9e9e9;
+  min-height: 80px;
 
   .far {
     font-size: 20px;
@@ -31,17 +34,57 @@ const NavbarStyle = styled.div`
   }
   .fab {
     font-size: 30px;
-    padding-right: 15px;
-    border-right: 1px solid black;
+
     line-height: 25px;
     cursor: pinter;
   }
   .navbar {
-    border: 1px solid red;
     margin: 0 auto;
+    width: 950px;
   }
-  .serach {
-    padding: 0 100px;
+  .title_sprite {
+    background-repeat: no-repeat;
+    background-position: -58px 0;
+    height: 29px;
+    width: 103px;
+    margin: 0 0 0 20px;
+    margin-right: 190px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  .user_sprite {
+    background-position: -208px -194px;
+    background-repeat: no-repeat;
+
+    height: 24px;
+    width: 24px;
+  }
+  .heart_sprite {
+    background-repeat: no-repeat;
+    background-position: -104px -142px;
+    height: 24px;
+    width: 24px;
+  }
+  .compass_sprite {
+    background-repeat: no-repeat;
+    background-position: -216px -78px;
+    height: 24px;
+    width: 24px;
+  }
+  .logo_sprite {
+    background-repeat: no-repeat;
+    background-position: -163px -90px;
+    height: 24px;
+    width: 24px;
+  }
+  .logo_line {
+    background-color: #262626;
+    height: 28px;
+    margin: 0 16px;
+    width: 1px;
+    margin-right: -10px;
   }
 `;
 
@@ -64,9 +107,20 @@ class InstaNavbar extends Component {
     return (
       <NavbarStyle>
         <Navbar light expand="md" className="navbar">
-          <NavbarBrand href="/">
-            <i className="fab fa-instagram" />
-            <span style={{ paddingLeft: "15px" }}>Instagram</span>
+          <NavbarBrand href="/" className="logo">
+            <div
+              className="logo_sprite fab"
+              style={{
+                backgroundImage: `url(${sprite})`
+              }}
+            />
+            <span className="logo_line" />
+            <div
+              className="title_sprite"
+              style={{
+                backgroundImage: `url(${sprite})`
+              }}
+            />
           </NavbarBrand>
           <NavbarBrand className="ml-auto">
             <Input
@@ -82,17 +136,32 @@ class InstaNavbar extends Component {
             <Nav className="ml-auto" navbar>
               <NavItem>
                 <NavLink href="/components/">
-                  <i className="far fa-compass" />
+                  <div
+                    className="compass_sprite far"
+                    style={{
+                      backgroundImage: `url(${sprite})`
+                    }}
+                  />
                 </NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="https://github.com/reactstrap/reactstrap">
-                  <i className="far fa-heart" />
+                  <div
+                    className="heart_sprite far"
+                    style={{
+                      backgroundImage: `url(${sprite})`
+                    }}
+                  />
                 </NavLink>
               </NavItem>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
-                  <i className="far fa-user" />
+                  <div
+                    className="user_sprite far"
+                    style={{
+                      backgroundImage: `url(${sprite})`
+                    }}
+                  />
                 </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem divider />

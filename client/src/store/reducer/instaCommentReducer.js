@@ -46,11 +46,11 @@ export default function instaCommentReducer(state = initialState, action) {
         ...state,
         data: action.data
       };
-    // case TOGGLE_LIKES:
-    //   return {
-    //     ...state,
-    //     data: action.newData
-    //   };
+    case TOGGLE_LIKES:
+      return {
+        ...state,
+        data: action.newData
+      };
     default:
       return state;
   }

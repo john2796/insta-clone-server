@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import uuidv4 from "uuid/v4";
+import uuid from "uuid";
+import moment from "moment";
 
 import {
   Card,
@@ -16,7 +17,8 @@ import {
 } from "reactstrap";
 import {
   addInstaComments,
-  deleteInstaComment
+  deleteInstaComment,
+  onToggleLikesHandler
 } from "../../store/action/instaCommentAction";
 
 const InstaCardStyle = styled.div`
@@ -38,7 +40,6 @@ const InstaCardStyle = styled.div`
   .delete_btn {
   }
 `;
-
 class InstaCard extends Component {
   state = {
     message: ""
@@ -51,7 +52,7 @@ class InstaCard extends Component {
     const postComments = {
       text: this.state.message,
       username: this.props.name,
-      commentId: uuidv4()
+      commentId: uuid()
     };
     newComments.map(comment => {
       if (comment.username === username) {
@@ -72,10 +73,16 @@ class InstaCard extends Component {
       [e.target.name]: e.target.value
     });
   };
-  // likeHanlder = id => {
-  //   const { data } = this.props.instagram;
-  //   this.props.onToggleLikesHandler(id, data);
-  // };
+  likeHanlder = _id => {
+    const newData = this.props.instagram;
+    newData.map(item => {
+      if (item._id === _id) {
+        item.isLiked = !item.isLiked;
+      }
+      return item;
+    });
+    this.props.onToggleLikesHandler(newData);
+  };
 
   render() {
     const {
@@ -86,8 +93,8 @@ class InstaCard extends Component {
         timestamp,
         thumbnailUrl,
         comments,
-        id,
-        isLiked
+        isLiked,
+        _id
       }
     } = this.props;
 
@@ -131,7 +138,7 @@ class InstaCard extends Component {
                 <i
                   className="far fa-heart"
                   style={isLiked ? { color: "red" } : null}
-                  onClick={() => this.likeHanlder(id)}
+                  onClick={() => this.likeHanlder(_id)}
                 />
               </span>
               <span className="comment_icons_comm">
@@ -188,7 +195,7 @@ class InstaCard extends Component {
                 color: "gray"
               }}
             >
-              {timestamp}
+              {moment(timestamp).fromNow()}
             </span>
           </CardBody>
           <form onSubmit={e => this.addComment(e, username)}>
@@ -235,6 +242,7 @@ export default connect(
   mapStateToProps,
   {
     addInstaComments,
-    deleteInstaComment
+    deleteInstaComment,
+    onToggleLikesHandler
   }
 )(InstaCard);
