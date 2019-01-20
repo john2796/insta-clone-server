@@ -2,12 +2,8 @@ import dummyData from "../../dummyData";
 
 import {
   ADD_COMMENT,
-  UPDATE_COMMENT,
   DELETE_COMMENT,
-  COMMENT_ERRORS,
-  TOGGLE_LIKES,
   GET_COMMENT,
-  GET_ERRORS,
   POST_LOADING
 } from "../action/types";
 
@@ -45,11 +41,6 @@ export default function instaCommentReducer(state = initialState, action) {
       return {
         ...state,
         data: action.data
-      };
-    case TOGGLE_LIKES:
-      return {
-        ...state,
-        data: action.newData
       };
     default:
       return state;

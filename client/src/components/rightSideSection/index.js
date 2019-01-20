@@ -2,16 +2,8 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import moment from "moment";
+import { Card, CardBody, CardTitle } from "reactstrap";
 
-import {
-  Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  Button
-} from "reactstrap";
 const RightSideStyle = styled.div`
   background: white;
   background: #f8f9fa;
@@ -127,7 +119,12 @@ class RightSide extends Component {
             />
             <div className="user_info">
               <h3>{this.props.name}</h3>
-              <span>web16🔥</span>
+              <span>
+                web16{" "}
+                <span role="img" aria-label="firaa">
+                  🔥
+                </span>
+              </span>
             </div>
           </div>
         </HeaderStyle>

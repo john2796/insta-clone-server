@@ -12,13 +12,11 @@ import {
   CardBody,
   CardTitle,
   CardSubtitle,
-  Button,
   Input
 } from "reactstrap";
 import {
   addInstaComments,
-  deleteInstaComment,
-  onToggleLikesHandler
+  deleteInstaComment
 } from "../../store/action/instaCommentAction";
 
 const InstaCardStyle = styled.div`
@@ -99,7 +97,8 @@ const InstaCardStyle = styled.div`
 `;
 class InstaCard extends Component {
   state = {
-    message: ""
+    message: "",
+    heart: false
   };
 
   addComment = (e, username) => {
@@ -113,52 +112,30 @@ class InstaCard extends Component {
       updatedAt: new Date(),
       createdAt: new Date()
     };
-    // timestamp={comment.updatedAt}
-    //moment(updatedAt).fromNow()
-    newComments.map(comment => {
-      if (comment.username === username) {
-        comment.comments.push(postComments);
-      }
-    });
-
+    newComments.map(comment =>
+      comment.username === username ? comment.comments.push(postComments) : null
+    );
     this.props.addInstaComments(username, newComments, postComments);
     this.setState({ message: "" });
   };
-
   deleteComment = (commentId, username) => {
     this.props.deleteInstaComment(commentId, username);
   };
-
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
   };
-  likeHanlder = _id => {
-    const newData = this.props.instagram;
-    newData.map(item => {
-      if (item._id === _id) {
-        item.isLiked = !item.isLiked;
-      }
-      return item;
+  toggleHeart = () => {
+    this.setState((state, props) => {
+      return { heart: !state.heart };
     });
-    this.props.onToggleLikesHandler(newData);
   };
 
   render() {
     const {
-      item: {
-        imageUrl,
-        username,
-        likes,
-        timestamp,
-        thumbnailUrl,
-        comments,
-        isLiked,
-        _id
-      }
+      item: { imageUrl, username, likes, timestamp, thumbnailUrl, comments }
     } = this.props;
-
     return (
       <InstaCardStyle>
         <Card
@@ -198,10 +175,15 @@ class InstaCard extends Component {
             <div className="comment_icons">
               <div className="flex_icon_item first_icon_item">
                 <div
-                  className="comment_icons_heart"
+                  className={
+                    this.state.heart
+                      ? "comment_icons_heart"
+                      : "comment_icons_heart_red"
+                  }
                   style={{
                     backgroundImage: `url(${sprite})`
                   }}
+                  onClick={this.toggleHeart}
                 />
                 <div
                   className="comment_icon_message"
@@ -231,7 +213,7 @@ class InstaCard extends Component {
                 margin: "4px 0 10px 0"
               }}
             >
-              {isLiked ? likes + 1 : likes} likes
+              {this.state.heart ? likes + 1 : likes} likes
             </CardSubtitle>
 
             {comments.map((comment, index) => (
@@ -255,7 +237,7 @@ class InstaCard extends Component {
                   </span>
                 </span>
                 <span>
-                  {!comment.commentId ? (
+                  {/* {!comment.commentId ? (
                     ""
                   ) : (
                     <Button
@@ -269,7 +251,7 @@ class InstaCard extends Component {
                     >
                       X
                     </Button>
-                  )}
+                  )} */}
                 </span>
               </CardText>
             ))}
@@ -299,19 +281,22 @@ class InstaCard extends Component {
   }
 }
 
-// InstaCard.propTypes = {
-//   instagram: PropTypes.shape({
-//     comments: PropTypes.arrayOf(
-//       PropTypes.shape({
-//         text: PropTypes.string,
-//         username: PropTypes.string
-//       })
-//     ),
-//     thumbnailUrl: PropTypes.string,
-//     timestamp: PropTypes.string,
-//     username: PropTypes.string
-//   })
-// };
+InstaCard.propTypes = {
+  instagram: PropTypes.arrayOf(
+    PropTypes.shape({
+      comments: PropTypes.arrayOf(
+        PropTypes.shape({
+          text: PropTypes.string,
+          username: PropTypes.string
+        })
+      ),
+      thumbnailUrl: PropTypes.string,
+      timestamp: PropTypes.string,
+      username: PropTypes.string
+    })
+  ),
+  name: PropTypes.string
+};
 
 const mapStateToProps = state => ({
   instagram: state.insta.data,
@@ -322,7 +307,6 @@ export default connect(
   mapStateToProps,
   {
     addInstaComments,
-    deleteInstaComment,
-    onToggleLikesHandler
+    deleteInstaComment
   }
 )(InstaCard);

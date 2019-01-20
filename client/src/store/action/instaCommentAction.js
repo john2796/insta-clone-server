@@ -1,11 +1,9 @@
 import axios from "axios";
 import {
   ADD_COMMENT,
-  UPDATE_COMMENT,
   DELETE_COMMENT,
   GET_COMMENT,
   GET_ERRORS,
-  TOGGLE_LIKES,
   POST_LOADING
 } from "./types";
 
@@ -53,13 +51,6 @@ export const deleteInstaComment = (commentId, username) => dispatch => {
       })
     )
     .catch(err => console.log(err));
-};
-
-export const onToggleLikesHandler = newData => {
-  return {
-    type: TOGGLE_LIKES,
-    newData
-  };
 };
 
 export const setPostsLoading = () => {

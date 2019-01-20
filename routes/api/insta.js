@@ -87,4 +87,43 @@ router.delete("/comments/:commentId/:username", (req, res) => {
   });
 });
 
+// router.put("/comments/:commentId", (req, res) => {
+//   const { commentId } = req.params;
+//   if (!commentId)
+//     return res.json({ success: false, error: "no user id provided" });
+
+//   Insta.findById(commentId, (err, profile) => {
+//     if (err) return res.json({ success: false, err });
+//     const { text } = req.body;
+//     if (text) profile.comments.text = text;
+//     console.log(profile);
+//     // if (username) profile.username = username;
+//     profile.save(err => {
+//       if (err) return res.json({ success: false, error });
+//       return res.json({ success: true });
+//     });
+//   }).then(profile => profile);
+// });
+// router.post("/comments/:commentId", (req, res) => {
+//   Insta.findOne(({commentId:req.params.commentId}), (err, profile) => {
+//     if (!profile) res.status(404).json({ error: "data is not found" });
+//     else {
+//       const { text } = req.body;
+//       const comments = profile.comments;
+//       for (let key in comments) {
+//         profile.comments[key].text = text;
+//       }
+//       profile
+//         .save()
+//         .then(todo => {
+//           res.json(todo);
+//         })
+//         .catch(err => {
+//           res.status(400).json({ error: "Update not possible", err });
+//         });
+//       console.log(profile);
+//     }
+//   });
+// });
+
 module.exports = router;
