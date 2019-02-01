@@ -5,7 +5,6 @@ import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from "./types";
 
 // register user
 // http://localhost:5000/api/users/register
-
 export const registerUser = (userData, history) => dispatch => {
   axios
     .post("/api/users/register", userData)
@@ -17,7 +16,6 @@ export const registerUser = (userData, history) => dispatch => {
       })
     );
 };
-
 // Login - get user token
 // http://localhost:5000/api/users/login
 export const loginUser = userData => dispatch => {
@@ -42,7 +40,6 @@ export const loginUser = userData => dispatch => {
       })
     );
 };
-
 // Set logged in user
 export const setCurrentUser = decoded => {
   return {
@@ -56,7 +53,6 @@ export const setUserLoading = () => {
     type: USER_LOADING
   };
 };
-
 // Log user out
 export const logoutUser = () => dispatch => {
   // Remove token from local storage
