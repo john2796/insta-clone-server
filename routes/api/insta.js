@@ -21,20 +21,17 @@ router.get("/", (req, res) => {
     })
     .catch(err => res.status(404).json({ profile: "There is no profiles" }));
 });
-
 // @route   POST api/insta
 // @desc    Post comments
 // @access  Public
 //http://localhost:5000/api/insta
 router.post("/", (req, res) => {
   const profileFields = {};
-
   if (req.body.isLiked) profileFields.isLiked = req.body.isLiked;
   if (req.body.username) profileFields.username = req.body.username;
   if (req.body.thumbnailUrl) profileFields.thumbnailUrl = req.body.thumbnailUrl;
   if (req.body.imageUrl) profileFields.imageUrl = req.body.imageUrl;
   if (req.body.likes) profileFields.likes = req.body.likes;
-
   Insta.findOne({ username: req.body.username }, profiles => {
     if (profiles) {
       errors.username = "The username already exists";
@@ -43,11 +40,9 @@ router.post("/", (req, res) => {
     new Insta(profileFields).save().then(profiles => res.json(profiles));
   });
 });
-
 // @route   POST api/insta/comments
 // @desc    Add comments
 // @access  Public
-
 router.post("/comments/:username", (req, res) => {
   Insta.findOne({ username: req.params.username }).then(profile => {
     const newComments = {};
@@ -56,7 +51,6 @@ router.post("/comments/:username", (req, res) => {
     if (req.body.commentId) newComments.commentId = req.body.commentId;
     if (req.body.updatedAt) newComments.updatedAt = req.body.updatedAt;
     if (req.body.createdAt) newComments.createdAt = req.body.createdAt;
-
     profile.comments.push(newComments);
     profile
       .save()
@@ -64,7 +58,6 @@ router.post("/comments/:username", (req, res) => {
       .catch(err => console.log(err));
   });
 });
-
 // @route   Delete api/commentbox/comments
 // @desc    Delete comments
 // @access  Public
@@ -86,12 +79,10 @@ router.delete("/comments/:commentId/:username", (req, res) => {
     });
   });
 });
-
 // router.put("/comments/:commentId", (req, res) => {
 //   const { commentId } = req.params;
 //   if (!commentId)
 //     return res.json({ success: false, error: "no user id provided" });
-
 //   Insta.findById(commentId, (err, profile) => {
 //     if (err) return res.json({ success: false, err });
 //     const { text } = req.body;
